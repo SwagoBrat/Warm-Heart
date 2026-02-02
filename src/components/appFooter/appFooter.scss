@@ -1,0 +1,326 @@
+@use "../../style/variabels.scss" as *;
+
+.footer {
+    padding: 70px 0 41px 0;
+    background-color: $black;
+
+    &__info {
+        display: none;
+    }
+
+    &__customers {
+        display: none;
+    }
+
+    &__useful {
+        display: none;
+    }
+
+    &__container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__social {
+
+        display: flex;
+        flex-wrap: wrap;
+
+        .undertext {
+            display: none;
+        }
+
+        &-title {
+            color: $white;
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 34px;
+            text-transform: uppercase;
+        }
+
+        &-nav {
+            margin-top: 30px;
+
+            ul {
+                display: flex;
+                list-style: none;
+                padding: 0;
+                color: $white;
+
+                gap: 15px;
+
+                li {
+                    font-size: 40px;
+                }
+            }
+        }
+    }
+}
+
+
+.accordion {
+    border-radius: 5px;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.accordion-item {
+    box-sizing: content-box;
+    position: relative;
+
+    &::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: $white;
+        opacity: 0.3;
+    }
+}
+
+.accordion-header {
+    padding-bottom: 25px;
+    padding-top: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    background: transparent;
+    color: $white;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+
+
+}
+
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background: transparent;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 0;
+    transition: max-height 0.4s ease, gap 0.3s ease;
+
+    &__open {
+        max-height: 300px;
+        gap: 20px
+    }
+
+
+}
+
+.accordion-content a {
+    display: block;
+    width: 100%;
+    text-decoration: none;
+    color: $white;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 20px;
+
+    &:nth-last-child(1) {
+        padding-bottom: 10px;
+
+    }
+
+}
+
+.accordion-content a:hover {
+    color: #fff;
+}
+
+.undertext {
+    margin-top: 40px;
+    display: flex;
+    gap: 30px;
+
+    p {
+        color: $white;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 18px;
+        opacity: 0.3;
+    }
+}
+
+@media screen and (min-width:480px) {
+    .footer {
+        &__social {
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 50px;
+
+            &-nav {
+                margin-top: 0;
+            }
+        }
+    }
+}
+
+@media screen and (min-width:768px) {
+    .footer {
+        padding: 90px 0 48px 0;
+
+        &__container {
+            row-gap: 50px;
+            column-gap: 120px;
+            justify-content: center;
+        }
+
+        &__social {
+            width: 100%;
+
+            &-title {
+                font-size: 36px;
+                line-height: 43px;
+            }
+        }
+
+        &__info {
+            display: block;
+            width: 84px;
+
+            h3 {
+                color: $white;
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 29px;
+            }
+
+            nav {
+
+                ul {
+                    margin-top: 30px;
+                    padding: 0;
+                    list-style: none;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+
+                    li {
+                        color: $white;
+                        font-size: 21px;
+                        font-weight: 400;
+                        line-height: 25px;
+                    }
+                }
+            }
+        }
+
+        &__customers {
+            display: block;
+            width: 192px;
+
+            h3 {
+                color: $white;
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 29px;
+            }
+
+            nav {
+
+                ul {
+                    margin-top: 30px;
+                    padding: 0;
+                    list-style: none;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+
+                    li {
+                        color: $white;
+                        font-size: 21px;
+                        font-weight: 400;
+                        line-height: 25px;
+                    }
+                }
+            }
+        }
+
+        &__useful {
+            display: block;
+            width: 210px;
+
+            h3 {
+                color: $white;
+                font-size: 24px;
+                font-weight: 700;
+                line-height: 29px;
+            }
+
+            nav {
+
+                ul {
+                    margin-top: 30px;
+                    padding: 0;
+                    list-style: none;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+
+                    li {
+                        color: $white;
+                        font-size: 21px;
+                        font-weight: 400;
+                        line-height: 25px;
+                    }
+                }
+            }
+        }
+    }
+
+    .accordion {
+        display: none;
+    }
+
+    .undertext {
+        p {
+            font-size: 17px;
+            line-height: 20px;
+        }
+    }
+}
+
+@media screen and (min-width:1000px) {
+    .footer {
+        &__container {
+            column-gap: 50px;
+        }
+
+        &__social {
+            align-items: start;
+            width: 247px;
+            flex-wrap: wrap;
+            gap: 30px;
+
+            .undertext {
+                margin-top: 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px
+            }
+        }
+
+
+    }
+
+    .undertext {
+        display: none;
+    }
+}
+
+
+
+@media screen and (min-width:1920px) {
+    .footer {
+        &__container {
+            column-gap: 150px
+        }
+    }
+}

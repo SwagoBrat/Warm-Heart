@@ -1,0 +1,42 @@
+@use '../../../style/variabels.scss' as *;
+
+.head {
+    margin-top: 20px;
+
+    &__spinner {
+        margin-top: 20px;
+        justify-self: center;
+    }
+
+    &__h1 {
+        background-color: $beige;
+        padding: 55px 0 60px 0;
+
+
+
+
+        &-wrapper {
+            display: flex;
+            gap: 50px;
+            align-items: end
+        }
+
+        &-title {
+            color: $black;
+            font-size: 60px;
+            font-weight: 900;
+            line-height: 72px;
+            letter-spacing: 0%;
+            text-align: left;
+        }
+
+        &-subtitle {
+            color: $black;
+            font-size: 21px;
+            font-weight: 400;
+            line-height: 25px;
+            width: 636px;
+            height: 54px;
+        }
+    }
+}

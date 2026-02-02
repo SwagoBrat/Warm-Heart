@@ -1,0 +1,177 @@
+@use "../../style/variabels.scss" as *;
+
+.inst {
+    padding: 70px 0 90px 0;
+
+    &__title {
+        color: $black;
+        font-size: 36px;
+        font-weight: 900;
+        line-height: 43px;
+    }
+
+    &__wrapper {
+        margin-top: 40px;
+        display: flex;
+    }
+
+    &__block {
+        &:nth-child(n+2) {
+            display: none;
+        }
+    }
+
+    &__img {
+        border-radius: 25px
+    }
+
+    &__subtitle {
+        margin-top: 10px;
+        color: $black;
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 34px;
+    }
+
+    &__text {
+        margin-top: 5px;
+        color: $black;
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 20px;
+    }
+}
+
+@media screen and (min-width:480px) {
+    .inst {
+
+        &__title {
+            font-size: 40px;
+            line-height: 48px;
+        }
+    }
+
+}
+
+@media screen and (min-width:768px) {
+    .inst {
+        padding: 90px 0 110px 0;
+
+
+        &__title {
+            font-size: 48px;
+            line-height: 58px;
+        }
+
+        &__wrapper {
+            margin-top: 50px;
+            gap: 20px;
+        }
+
+        &__block {
+
+            &:nth-child(1) {
+                .inst__subtitle {
+                    display: none;
+                }
+
+            }
+
+            &:nth-child(2) {
+                display: block;
+
+
+            }
+        }
+
+        &__subtitle {
+            font-size: 36px;
+            line-height: 43px;
+        }
+
+        &__text {
+            width: 354px;
+            font-size: 21px;
+
+            line-height: 25px;
+        }
+    }
+}
+
+@media screen and (min-width:1000px) {
+    .inst {
+
+
+        &__block {
+
+            &:nth-child(1) {
+                .inst__img {
+                    width: 307px;
+                    height: 307px;
+                }
+
+                .inst__text {
+                    width: 307px;
+                }
+            }
+
+
+            &:nth-child(2) {
+                .inst__subtitle {
+                    display: none;
+                }
+
+
+            }
+
+            &:nth-child(3) {
+                display: block;
+
+                .inst__img {
+                    width: 213px;
+                    height: 213px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width:1920px) {
+
+    .inst {
+        padding: 130px 0 150px 0;
+
+        &__wrapper {
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        &__block {
+
+            &:nth-child(1) {
+                .inst__img {
+                    width: 386px;
+                    height: 386px;
+                }
+
+                .inst__text {
+                    width: 386px;
+                }
+            }
+
+            &:nth-child(2) {
+                .inst__img {
+                    width: 490px;
+                    height: 490px;
+                }
+            }
+
+            &:nth-child(3) {
+                .inst__img {
+                    width: 282px;
+                    height: 282px;
+                }
+            }
+        }
+    }
+}

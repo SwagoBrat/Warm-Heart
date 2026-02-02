@@ -1,0 +1,85 @@
+@use '../../style/variabels.scss' as *;
+
+.orderSummary {
+    width: 440px;
+    height: 380px;
+    background-color: $beige;
+    border-radius: 50px;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 60px 0 100px 0;
+
+
+    &__title {
+        text-align: center;
+        color: $black;
+        font-size: 36px;
+        font-weight: 900;
+        line-height: 43px;
+    }
+
+
+    &___subtotal {
+        color: $black;
+        font-size: 21px;
+        font-weight: 400;
+        line-height: 25px;
+        position: relative;
+
+        span {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 29px;
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    &__shipping {
+        color: $black;
+        font-size: 21px;
+        font-weight: 400;
+        line-height: 25px;
+        position: relative;
+
+        span {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 29px;
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    &__total {
+        color: $black;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 29px;
+        position: relative;
+
+        span {
+            position: absolute;
+            right: 0;
+        }
+    }
+
+    &__wrapper {
+        margin-top: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__btn {
+        margin-top: 50px;
+        width: 380px;
+        height: 60px;
+        background-color: $black;
+        border-radius: 100px;
+        color: $white;
+        font-size: 21px;
+        font-weight: 700;
+        line-height: 25px;
+    }
+}

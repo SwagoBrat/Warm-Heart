@@ -1,0 +1,42 @@
+@use '../../style/variabels.scss' as *;
+
+.lastViewed {
+    margin: 50px 0 100px 0;
+    box-sizing: border-box;
+
+    &__title {
+        color: $black;
+        font-size: 40px;
+        font-weight: 900;
+        line-height: 58px;
+    }
+
+    &__wrapper {
+        margin-top: 50px;
+        display: flex;
+        column-gap: 20px;
+    }
+
+    &-slide {
+        width: 225px;
+        height: 225px;
+    }
+
+    &-bg {
+        width: 225px;
+        height: 225px;
+        background-color: $beige;
+        border-radius: 50%;
+        align-content: center;
+        cursor: pointer;
+
+    }
+
+    &-img {
+        width: 135px;
+        height: 133px;
+        justify-self: center;
+    }
+
+
+}
