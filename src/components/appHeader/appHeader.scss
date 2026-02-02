@@ -39,6 +39,28 @@
     margin-top: 20px;
     position: relative;
 
+    .search-enter {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    .search-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: 300ms ease;
+    }
+
+    .search-exit {
+        opacity: 1;
+    }
+
+    .search-exit-active {
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: 300ms ease;
+    }
+
+
 
     &__search {
         margin-top: 40px;

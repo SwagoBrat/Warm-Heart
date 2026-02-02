@@ -25,7 +25,8 @@ const AppHeader = ({ carts, slides }) => {
                     setActiveMenu={setActiveMenu}
                     nodeRef={nodeRef}
                     carts={carts}
-                    slides={slides} />
+                    slides={slides}
+                />
 
                 <div className="header__nav">
                     <div
@@ -65,7 +66,7 @@ const AppHeader = ({ carts, slides }) => {
     );
 };
 
-const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides }) => {
+const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides, }) => {
     const [term, setTerm] = useState('')
     const plaidsSearch = slides.filter(slide =>
         term.length > 0 && slide.title.toLowerCase().includes(term.toLowerCase())
@@ -103,7 +104,7 @@ const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides
                     <form className="header__form">
                         <input type="text" placeholder="Search" value={term} onChange={(e) => setTerm(e.target.value)} />
                     </form>
-                    <SearchModal plaidsSearch={plaidsSearch} term={term} />
+                    <SearchModal plaidsSearch={plaidsSearch} term={term} duration={duration} />
                 </div>
                 <div
                     className="header__menu-rigth"
@@ -115,17 +116,29 @@ const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides
 }
 
 
-const SearchModal = ({ plaidsSearch, term }) => {
+const SearchModal = ({ plaidsSearch, term, duration }) => {
+    const nodeRef = useRef(null);
+
     return (
-        <div className="header__search">
-            {
-                plaidsSearch.length == 0 && term.length > 1
-                    ? <p>There is no plaids with this name</p>
-                    : plaidsSearch.map((item, i) => {
-                        return (
-                            <Link key={i} to={`/forecome/${item.id}`} className="cards__link">
-                                <div className="cards-slide"
-                                >
+        <CSSTransition
+            timeout={duration}
+            in={term.length > 0}
+            classNames="modal"
+            mountOnEnter
+            unmountOnExit
+            nodeRef={nodeRef}
+        >
+            <div ref={nodeRef} className="header__search">
+                {
+                    plaidsSearch.length === 0
+                        ? <p>There is no plaids with this name</p>
+                        : plaidsSearch.map(item => (
+                            <Link
+                                key={item.id}
+                                to={`/forecome/${item.id}`}
+                                className="cards__link"
+                            >
+                                <div className="cards-slide">
                                     <div className="cards__bg">
                                         <img src={item.img} alt={item.title} />
                                     </div>
@@ -136,12 +149,12 @@ const SearchModal = ({ plaidsSearch, term }) => {
                                     </div>
                                 </div>
                             </Link>
-                        )
-                    })
-            }
-        </div>
-    )
+                        ))
+                }
+            </div>
+        </CSSTransition>
+    );
+};
 
-}
 
 export default AppHeader;
