@@ -4,13 +4,13 @@ import { NavLink, Link } from 'react-router';
 
 import "./appHeader.scss";
 
-const AppHeader = ({ carts, slides }) => {
+const AppHeader = ({ carts, slides, handleCardClick }) => {
     const [activeMenu, setActiveMenu] = useState(false);
+    const [openFromSearch, setOpenFromSearch] = useState(false);
     const nodeRef = useRef(null);
 
     useEffect(() => {
         document.body.style.overflow = activeMenu ? "hidden" : "";
-
     }, [activeMenu]);
 
     const duration = 500;
@@ -18,7 +18,6 @@ const AppHeader = ({ carts, slides }) => {
     return (
         <div className="container">
             <header className="header">
-
                 <ViewModal
                     duration={duration}
                     activeMenu={activeMenu}
@@ -26,18 +25,22 @@ const AppHeader = ({ carts, slides }) => {
                     nodeRef={nodeRef}
                     carts={carts}
                     slides={slides}
+                    handleCardClick={handleCardClick}
+                    setOpenFromSearch={setOpenFromSearch}
+                    openFromSearch={openFromSearch}
                 />
-
                 <div className="header__nav">
                     <div
                         className="header__burger"
-                        onClick={() => setActiveMenu(true)}
+                        onClick={() => {
+                            setActiveMenu(true)
+                            setOpenFromSearch(false)
+                        }}
                     >
                         <span></span>
                         <span></span>
                         <span></span>
                     </div>
-
                     <nav className="header__nav-nav">
                         <ul>
                             <li><a href="#">Shop</a></li>
@@ -46,13 +49,15 @@ const AppHeader = ({ carts, slides }) => {
                         </ul>
                     </nav>
                 </div>
-
                 <h1 className="header__title mobile"><NavLink to='/'>wh</NavLink></h1>
                 <h1 className="header__title tabs"><NavLink to='/'>Warm heart</NavLink></h1>
-
                 <div className="header__icons">
                     <a href="#"><span className="icon-search"></span></a>
-                    <a href="#"><span className="search">Search</span></a>
+                    <a className="search__button"
+                        onClick={() => {
+                            setActiveMenu(true)
+                            setOpenFromSearch(true)
+                        }}><span className="search">Search</span></a>
                     <a href="#" className="icon-shop">
                         <span className="icon-shopping-bag header__icon"></span>({carts.length})
                     </a>
@@ -60,18 +65,27 @@ const AppHeader = ({ carts, slides }) => {
                         <span className="shopping-bag">Cart</span>({carts.length})
                     </NavLink>
                 </div>
-
             </header>
         </div >
     );
 };
-
-const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides, }) => {
+const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides, handleCardClick, setOpenFromSearch, openFromSearch }) => {
     const [term, setTerm] = useState('')
     const plaidsSearch = slides.filter(slide =>
         term.length > 0 && slide.title.toLowerCase().includes(term.toLowerCase())
     );
 
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        setTerm('')
+    }, [activeMenu])
+
+    useEffect(() => {
+        if (activeMenu && openFromSearch) {
+            inputRef.current.focus();
+        }
+    }, [activeMenu, openFromSearch]);
 
     return (
         <CSSTransition
@@ -86,25 +100,34 @@ const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides
                 <div className="header__menu-left">
                     <div
                         className="header__menu-close"
-                        onClick={() => setActiveMenu(false)}
+                        onClick={() => {
+                            setActiveMenu(false)
+                            setOpenFromSearch(false)
+                        }}
                     >
                         <span></span>
                         <span></span>
                     </div>
                     <nav className="header__menu_nav">
                         <ul>
-                            <li><NavLink to='/shop' className="header__menu_link">Shop</NavLink></li>
-                            <li><NavLink to='/contact' className="header__menu_link">Contact</NavLink></li>
-                            <li>                    <NavLink to={'/cart'} className="cart">
+                            <li><NavLink onClick={() => setActiveMenu(false)} to='/shop' className="header__menu_link">Shop</NavLink></li>
+                            <li><NavLink onClick={() => setActiveMenu(false)} to='/contact' className="header__menu_link">Contact</NavLink></li>
+                            <li><NavLink onClick={() => setActiveMenu(false)} to='/aboutUs' className="header__menu_link">About Us</NavLink></li>
+                            <li><NavLink onClick={() => setActiveMenu(false)} to={'/cart'} className="cart">
                                 <span className="shopping-bag">Cart</span>({carts.length})
                             </NavLink></li>
                         </ul>
                     </nav>
                     <div className="vector"></div>
                     <form className="header__form">
-                        <input type="text" placeholder="Search" value={term} onChange={(e) => setTerm(e.target.value)} />
+                        <input ref={inputRef} type="text" placeholder="Search" value={term} onChange={(e) => setTerm(e.target.value)} />
                     </form>
-                    <SearchModal plaidsSearch={plaidsSearch} term={term} duration={duration} />
+                    <SearchModal
+                        setActiveMenu={setActiveMenu}
+                        plaidsSearch={plaidsSearch}
+                        term={term}
+                        duration={duration}
+                        handleCardClick={handleCardClick} />
                 </div>
                 <div
                     className="header__menu-rigth"
@@ -116,7 +139,7 @@ const ViewModal = ({ duration, activeMenu, setActiveMenu, nodeRef, carts, slides
 }
 
 
-const SearchModal = ({ plaidsSearch, term, duration }) => {
+const SearchModal = ({ plaidsSearch, term, duration, handleCardClick, setActiveMenu }) => {
     const nodeRef = useRef(null);
 
     return (
@@ -130,7 +153,7 @@ const SearchModal = ({ plaidsSearch, term, duration }) => {
         >
             <div ref={nodeRef} className="header__search">
                 {
-                    plaidsSearch.length === 0
+                    plaidsSearch.length === 0 && term.length >= 1
                         ? <p>There is no plaids with this name</p>
                         : plaidsSearch.map(item => (
                             <Link
@@ -138,7 +161,12 @@ const SearchModal = ({ plaidsSearch, term, duration }) => {
                                 to={`/forecome/${item.id}`}
                                 className="cards__link"
                             >
-                                <div className="cards-slide">
+                                <div className="cards-slide"
+                                    onClick={() => {
+                                        handleCardClick(item.id)
+                                        setActiveMenu(false)
+                                    }}
+                                >
                                     <div className="cards__bg">
                                         <img src={item.img} alt={item.title} />
                                     </div>

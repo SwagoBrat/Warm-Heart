@@ -5,18 +5,21 @@ import AppBlackBlock from "../../appBlackBlock/AppBlackBlock";
 import AppEco from "../../appEco/AppEco";
 import AppInst from "../../appInst/AppInst";
 import AppFooter from "../../appFooter/AppFooter";
+import AppSubscribtion from "../../appSubscribtion/AppSubscribtion";
 
 
-const MainPage = ({ carts, slides }) => {
+
+const MainPage = ({ carts, slides, handleCardClick, loading, error }) => {
 
     return (
         <>
-            <AppHeader carts={carts} slides={slides} />
-            <AppHead slides={slides} />
-            <AppPopular slides={slides} />
+            <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+            <AppHead  slides={slides}  loading={loading} error={error}/>
+            <AppPopular  slides={slides} handleCardClick={handleCardClick}  loading={loading} error={error}/>
             <AppBlackBlock />
             <AppEco />
             <AppInst />
+            <AppSubscribtion />
             <AppFooter />
         </>
     )

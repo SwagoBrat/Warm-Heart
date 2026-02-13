@@ -1,13 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router';
 
-import imgForecome1 from "../../recources/forecome/forecome.png";
-import imgForecome2 from "../../recources/forecome/forecome2.png";
-import imgForecome3 from "../../recources/forecome/secondPled.png";
-import imgForecome4 from "../../recources/forecome/thirdPled.png";
-import imgForecome5 from "../../recources/forecome/fourthPled.png";
-
-const AppAlso = ({ slides, forecome }) => {
+const AppAlso = ({ slides, forecome, handleCardClick }) => {
     const filtered = slides.filter((slide) => slide.size === forecome.size && slide.id !== forecome.id);
     const sliced = filtered.slice(0, 8);
 
@@ -38,7 +32,7 @@ const AppAlso = ({ slides, forecome }) => {
     };
 
     return (
-        <section className="popular">
+        <div className="popular">
             <div className="container">
                 <h2 className="popular__title">You may also like</h2>
                 <div className="popular__wrapper">
@@ -52,6 +46,10 @@ const AppAlso = ({ slides, forecome }) => {
                         {sliced.map((item, idx) => (
                             <Link key={item.id} to={`/forecome/${item.id}`} className='swiper-link'>
                                 <div
+                                    onClick={() => {
+                                        window.scrollTo({ top: 0, behavior: "smooth" })
+                                        handleCardClick(item.id)
+                                    }}
                                     className="swiper-slide"
                                     ref={idx === 0 ? slideRef : null}
                                 >
@@ -59,7 +57,8 @@ const AppAlso = ({ slides, forecome }) => {
                                         <img src={item.img} alt={item.title} />
                                     </div>
                                     <h3 className="swipper__title">{item.title}</h3>
-                                    <div className="swipper__parametrs">
+                                    <div className="swipper__parametrs"
+                                    >
                                         <p>{item.size}</p>
                                         <p>{item.price}</p>
                                     </div>
@@ -86,7 +85,7 @@ const AppAlso = ({ slides, forecome }) => {
                     )}
                 </div>
             </div>
-        </section>
+        </div>
     )
 }
 

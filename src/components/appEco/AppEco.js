@@ -16,7 +16,7 @@ const AppEco = () => {
                     more cozy.
                 </p>
             </div>
-        </section>
+        </section >
     )
 }
 

@@ -6,18 +6,24 @@ import Spinner from "../../spinner/Spinner";
 
 import './cart.scss'
 
-const Cart = ({ carts, setCarts, slides }) => {
+const Cart = ({ carts, setCarts, slides, handleCardClick, getNodeRef }) => {
 
     const plaids = carts
         .map(cart => {
             const slide = slides.find(slide => slide.id === cart.id);
-            return slide ? { ...slide, counter: cart.counter } : null;
+            return slide ? {
+                ...slide,
+                counter: cart.counter,
+                nodeRef: getNodeRef(cart.id)
+            }
+                : null
         })
         .filter(Boolean);
 
+
     return (
         <>
-            <AppHeader carts={carts} slides={slides} />
+            <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
             {
                 slides.length > 0 ?
                     <>

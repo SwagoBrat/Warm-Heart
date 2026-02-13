@@ -9,23 +9,15 @@ import Spinner from "../../spinner/Spinner";
 
 import './shop.scss';
 
-const Shop = ({ carts, slides }) => {
+const Shop = ({ carts, slides, lastViewedIds, handleCardClick }) => {
     const [filters, setFilters] = useState({
         size: '',
         price: '',
     });
-    const [lastViewedIds, setLastViewedIds] = useState(() => {
-        const saved = localStorage.getItem("lastViewedIds");
-        return saved ? JSON.parse(saved) : [];
-    });
-
-    useEffect(() => {
-        localStorage.setItem("lastViewedIds", JSON.stringify(lastViewedIds));
-    }, [lastViewedIds]);
 
     return (
         <>
-            <AppHeader carts={carts} slides={slides} />
+            <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
             <section className="head">
                 <div className="head__h1">
                     <div className="container">
@@ -43,7 +35,7 @@ const Shop = ({ carts, slides }) => {
             {slides.length > 0 ?
                 <>
                     <MenuFilter filters={filters} setFilters={setFilters} slides={slides} />
-                    <AppCards filters={filters} setLastViewedIds={setLastViewedIds} slides={slides} />
+                    <AppCards filters={filters} handleCardClick={handleCardClick} slides={slides} />
                     <LastViewed lastViewedIds={lastViewedIds} slides={slides} />
                 </>
                 : <div className="head__spinner">

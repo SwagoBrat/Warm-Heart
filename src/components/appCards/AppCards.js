@@ -5,7 +5,7 @@ import { Link } from "react-router";
 
 import "./appCards.scss";
 
-const AppCards = ({ filters, setLastViewedIds, slides }) => {
+const AppCards = ({ filters, slides, handleCardClick }) => {
 
     const filteredSlides = slides.filter(item => {
         const sizeMatch = !filters?.size || item.size.replace(/\s/g, '') === filters.size.replace(/\s/g, '');
@@ -15,6 +15,7 @@ const AppCards = ({ filters, setLastViewedIds, slides }) => {
 
     const ITEMS_PER_PAGE = 12;
     const duration = 500;
+
 
     const [page, setPage] = useState(1);
     const nodeRef = useRef(null);
@@ -35,13 +36,6 @@ const AppCards = ({ filters, setLastViewedIds, slides }) => {
         setPage(1);
     }, [filters]);
 
-    const handleCardClick = (id) => {
-        setLastViewedIds(prev => {
-            const filtered = prev.filter(itemId => itemId !== id);
-            const updated = [id, ...filtered];
-            return updated.slice(0, 4);
-        })
-    }
 
     const transitionKey = `${filters.size}-${filters.price}-${page}`;
 
@@ -95,13 +89,17 @@ const AppCards = ({ filters, setLastViewedIds, slides }) => {
                         <p>{i + 1}</p>
                     </span>
                 ))}
-
-                <button className="cards__swiper-left" onClick={handlePrev}>
-                    ◀
-                </button>
-                <button className="cards__swiper-right" onClick={handleNext}>
-                    ▶
-                </button>
+                {
+                    filteredSlides.length > 12 ?
+                        <>
+                            <button className="cards__swiper-left" onClick={handlePrev}>
+                                ◀
+                            </button>
+                            <button className="cards__swiper-right" onClick={handleNext}>
+                                ▶
+                            </button></>
+                        : null
+                }
             </div>
         </div>
     );

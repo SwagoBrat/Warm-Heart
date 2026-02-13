@@ -1,9 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 
 import './appCard.scss';
 
-const AppCard = ({ forecome, setCarts }) => {
+const AppCard = ({ forecome, setCarts, numericId }) => {
     const [count, setCount] = useState(1)
     const [activeChoice, setActiveChoice] = useState('description');
     const nodeRef = useRef(null);
@@ -21,6 +21,10 @@ const AppCard = ({ forecome, setCarts }) => {
         id: forecome.id,
         counter: count
     }
+
+    useEffect(() => {
+        setCount(1)
+    }, [numericId])
 
     const handleAddClick = (plaid) => {
         setCarts((prev) => {

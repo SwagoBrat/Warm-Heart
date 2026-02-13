@@ -8,6 +8,8 @@ const LastViewed = ({ lastViewedIds, slides }) => {
         .map(id => slides.find(item => item.id === id))
         .filter(Boolean);
 
+    console.log(lastViewedIds)
+
     return (
         <div className="container">
             <div className="lastViewed">

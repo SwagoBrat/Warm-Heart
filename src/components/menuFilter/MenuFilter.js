@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import usePlaidsService from "../../service/PlaidsService";
 
 import './menuFilter.scss';
 
-const sizeOption = ['130x170cm', '150x200cm'];
-const priceOptions = ['€85', "€90", "€110", "€140", '€180'];
-
 const MenuFilter = ({ filters, setFilters, slides }) => {
-    const [openDropdown, setOpenDropdown] = useState(null);
+    const [openDropdown, setOpenDropdown] = useState('');
+    const [serviceFilters, setServiceFilters] = useState([])
+
+    const { getAllFilters } = usePlaidsService()
+
+
+    useEffect(() => {
+        getAllFilters()
+            .then((data) => setServiceFilters(data))
+    }, [])
+
+
 
     const handleSelect = (key, value) => {
         setFilters(prev => ({
@@ -34,7 +43,7 @@ const MenuFilter = ({ filters, setFilters, slides }) => {
 
                 {openDropdown === "size" ?
                     <div className="dropdown">
-                        {sizeOption.map(option => (
+                        {serviceFilters.size.map(option => (
                             <div key={option} onClick={() => handleSelect("size", option)}>
                                 {option}
                             </div>
@@ -44,7 +53,7 @@ const MenuFilter = ({ filters, setFilters, slides }) => {
                 }
                 {openDropdown === "price" ?
                     <div className="dropdown">
-                        {priceOptions.map(option => (
+                        {serviceFilters.price.map(option => (
                             <div key={option} onClick={() => handleSelect("price", option)}>
                                 {option}
                             </div>

@@ -4,10 +4,10 @@ import AppMap from "../../appMap/AppMap"
 
 import "./contact.scss"
 
-const Contact = ({ carts, slides }) => {
+const Contact = ({ carts, slides, handleCardClick }) => {
     return (
         <>
-            <AppHeader carts={carts} slides={slides} />
+            <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
             <div className="contact">
                 <div className="container">
                     <h2 className="contact__title">Contacts</h2>
