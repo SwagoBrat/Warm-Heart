@@ -4,7 +4,10 @@ import Contact from "../pages/contact/Contact";
 import SingleForecome from "../pages/singleForcome/SingleForecome";
 import Cart from "../pages/cart/Cart";
 import AboutUs from "../pages/aboutUs/AboutUs";
+import Spinner from "../spinner/Spinner";
+import Page404 from "../Page 404/Page404";
 
+import { Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router";
 import { useState, useEffect, createRef, useRef } from "react";
 import usePlaidsService from "../../service/PlaidsService";
@@ -82,48 +85,53 @@ const App = () => {
 
     return (
         <Router>
-            <Routes>
-                <Route path='/' element={<MainPage
-                    carts={carts}
-                    slides={slides}
-                    handleCardClick={handleCardClick}
-                    loading={loading}
-                    error={error} />} />
-                <Route path='/shop' element={<Shop
-                    handleCardClick={handleCardClick}
-                    lastViewedIds={lastViewedIds}
-                    carts={carts}
-                    slides={slides}
-                    loading={loading}
-                    error={error} />} />
-                <Route path="/contact" element={<Contact
-                    handleCardClick={handleCardClick}
-                    carts={carts}
-                    slides={slides}
-                />} />
-                <Route path="/forecome/:id" element={<SingleForecome
-                    handleCardClick={handleCardClick}
-                    lastViewedIds={lastViewedIds}
-                    slides={slides}
-                    carts={carts}
-                    setCarts={setCarts}
-                    loading={loading}
-                    error={error} />} />
-                <Route path='/cart' element={<Cart
-                    getNodeRef={getNodeRef}
-                    carts={carts}
-                    handleCardClick={handleCardClick}
-                    setCarts={setCarts}
-                    slides={slides}
-                    loading={loading}
-                    error={error} />} />
-                <Route />
-                <Route path="/aboutUs"
-                    element={<AboutUs
+            <Suspense fallback={<Spinner />}>
+                <Routes>
+                    <Route path='/' element={<MainPage
+                        carts={carts}
+                        slides={slides}
+                        handleCardClick={handleCardClick}
+                        loading={loading}
+                        error={error} />} />
+                    <Route path='/shop' element={<Shop
+                        handleCardClick={handleCardClick}
+                        lastViewedIds={lastViewedIds}
+                        carts={carts}
+                        slides={slides}
+                        loading={loading}
+                        error={error} />} />
+                    <Route path="/contact" element={<Contact
+                        handleCardClick={handleCardClick}
+                        carts={carts}
+                        slides={slides}
+                    />} />
+                    <Route path="/forecome/:id" element={<SingleForecome
+                        handleCardClick={handleCardClick}
+                        lastViewedIds={lastViewedIds}
                         slides={slides}
                         carts={carts}
-                        handleCardClick={handleCardClick} />}></Route>
-            </Routes>
+                        setCarts={setCarts}
+                        loading={loading}
+                        error={error} />} />
+                    <Route path='/cart' element={<Cart
+                        getNodeRef={getNodeRef}
+                        carts={carts}
+                        handleCardClick={handleCardClick}
+                        setCarts={setCarts}
+                        slides={slides}
+                        loading={loading}
+                        error={error} />} />
+                    <Route />
+                    <Route path="/aboutUs"
+                        element={<AboutUs
+                            slides={slides}
+                            carts={carts}
+                            handleCardClick={handleCardClick} />}></Route>
+                    <Route path="*"
+                        element={<Page404 />}>
+                    </Route>
+                </Routes>
+            </Suspense>
         </Router>
     )
 }

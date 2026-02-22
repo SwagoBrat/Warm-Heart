@@ -8,12 +8,12 @@ import ErrorMessage from "../errorMessage/ErrorMessage";
 import "./appHead.scss";
 import BG from "../../recources/BG/backgroubd.png";
 
-const AppHead = ({ slides , loading, error }) => {
+const AppHead = ({ slides, loading, error }) => {
     const [active, setActive] = useState(0);
     const nodeRef = useRef(null);
 
     const sliceSlides = slides.slice(0, 5);
-    
+
 
 
     const renderItems = () => {
@@ -39,7 +39,7 @@ const AppHead = ({ slides , loading, error }) => {
                 <div className="info__bg-right">
                     <img src={BG} alt="Bg" />
                     <div className="info__pagenation">
-                        {sliceSlides.map((image, index) => (
+                        {sliceSlides.map((_, index) => (
                             <span
                                 key={index}
                                 onClick={() => setActive(index)}
@@ -93,7 +93,6 @@ const AppHead = ({ slides , loading, error }) => {
                         <span>Shop now</span>
                     </Link>
                 </div>
-
                 {error && errorItem()}
                 {loading && loadingItem()}
                 {!loading && !error && sliceSlides.length > 0 && renderItems()}

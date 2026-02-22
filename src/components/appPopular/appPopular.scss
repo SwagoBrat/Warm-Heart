@@ -42,7 +42,6 @@
 
     .swiper-wrapper {
         display: flex;
-        flex-direction: row;
         gap: 10px;
     }
 
@@ -90,24 +89,23 @@
     }
 
     .swiper-rigth {
-        width: 30px;
-        height: 30px;
+        font-size: 30px;
         position: absolute;
-        top: 0;
-        left: -70px;
-        background-color: $black;
+        top: -10px;
+        left: -90px;
         display: none;
+        background-color:transparent;
+        border: none;
     }
 
     .swiper-left {
-        width: 30px;
-        height: 30px;
+        font-size: 30px;
         position: absolute;
-        top: 0;
-        right: -40px;
-        background-color: $black;
+        top: -10px;
+        right: -90px;
         display: none;
-
+        background-color:transparent;
+        border: none;
     }
 }
 

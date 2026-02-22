@@ -87,8 +87,8 @@ const AppPopular = ({ slides, handleCardClick, loading, error }) => {
                                 }
                             />
                         ))}
-                        <button className="swiper-rigth" onClick={prev}></button>
-                        <button className="swiper-left" onClick={next}></button>
+                        <button className="swiper-left" onClick={next}><span className='icon-right'></span></button>
+                        <button className="swiper-rigth" onClick={prev}> <span className='icon-left'></span></button>
                     </div>
                 )}
             </>

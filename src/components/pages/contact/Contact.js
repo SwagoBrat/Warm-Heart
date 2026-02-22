@@ -1,13 +1,24 @@
 import AppHeader from "../../appHeader/AppHeader"
 import AppFooter from "../../appFooter/AppFooter"
 import AppMap from "../../appMap/AppMap"
+import { Helmet } from "react-helmet"
 
 import "./contact.scss"
+import ErrorBoundary from "../../errorBoundary/ErrorBoundary"
 
 const Contact = ({ carts, slides, handleCardClick }) => {
     return (
         <>
-            <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+            <Helmet>
+                <meta
+                    name="description"
+                    content="Plaids market place"
+                />
+                <title>Plaids market place contacts</title>
+            </Helmet >
+            <ErrorBoundary>
+                <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+            </ErrorBoundary>
             <div className="contact">
                 <div className="container">
                     <h2 className="contact__title">Contacts</h2>

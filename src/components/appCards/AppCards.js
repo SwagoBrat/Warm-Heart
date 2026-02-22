@@ -24,6 +24,7 @@ const AppCards = ({ filters, slides, handleCardClick }) => {
 
     const startIndex = (page - 1) * ITEMS_PER_PAGE;
     const currentSlides = filteredSlides.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    console.log(currentSlides)
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -93,10 +94,10 @@ const AppCards = ({ filters, slides, handleCardClick }) => {
                     filteredSlides.length > 12 ?
                         <>
                             <button className="cards__swiper-left" onClick={handlePrev}>
-                                ◀
+                                <span className='icon-left'></span>
                             </button>
                             <button className="cards__swiper-right" onClick={handleNext}>
-                                ▶
+                                <span className='icon-right'></span>
                             </button></>
                         : null
                 }

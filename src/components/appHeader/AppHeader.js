@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import { NavLink, Link } from 'react-router';
 
+import video from '../../videos/pepefa.mp4'
+
 import "./appHeader.scss";
 
 const AppHeader = ({ carts, slides, handleCardClick }) => {

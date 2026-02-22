@@ -17,9 +17,9 @@ const AppFooter = () => {
                         <h2 className="footer__social-title">warm heart</h2>
                         <nav className="footer__social-nav">
                             <ul>
-                                <li><span className="icon-facebook"></span></li>
+                                <li><span className="icon-facebook-official"></span></li>
                                 <li> <span className="icon-instagram"></span></li>
-                                <li> <span className="icon-pinterest-circled"></span></li>
+                                <li> <span className="icon-pinterest"></span></li>
                             </ul>
                         </nav>
                         <div className="undertext">

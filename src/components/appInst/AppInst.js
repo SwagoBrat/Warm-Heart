@@ -12,17 +12,17 @@ const AppInst = () => {
                 <h2 className="inst__title">Follow us on instagram</h2>
                 <div className="inst__wrapper">
                     <div className="inst__block">
-                        <img className="inst__img" src={img1} alt="" />
+                        <img className="inst__img" src={img1} alt="pepe" />
                         <h3 className="inst__subtitle">@warm.heart</h3>
                         <p className="inst__text">On our Instagram, we regularly share the most interesting news. We also tell
                             you about all our new products.</p>
                     </div>
                     <div className="inst__block">
-                        <img className="inst__img" src={img2} alt="" />
+                        <img className="inst__img" src={img2} alt="fa" />
                         <h3 className="inst__subtitle">@warm.heart</h3>
                     </div>
                     <div className="inst__block">
-                        <img className="inst__img" src={img3} alt="" />
+                        <img className="inst__img" src={img3} alt="pepefa" />
                         <h3 className="inst__subtitle">@warm.heart</h3>
                     </div>
                 </div>

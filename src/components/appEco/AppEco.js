@@ -1,4 +1,5 @@
-import imgEco from '../../recources/Icon.png'
+import imgEco from '../../recources/Icon.png';
+import video from '../../videos/pepefa.mp4'
 
 import "./appEco.scss"
 

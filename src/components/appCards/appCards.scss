@@ -122,23 +122,23 @@
         }
     }
 
-    &__swiper-rigth {
+    &__swiper-right {
+        font-size: 30px;
         cursor: pointer;
-        width: 30px;
-        height: 30px;
         position: absolute;
-        top: 0;
-        left: -70px;
-        background-color: $black;
+        top: -4px;
+        right: -40px;
+        background-color: transparent;
+        border:none;
     }
 
     &__swiper-left {
+        font-size: 30px;
         cursor: pointer;
-        width: 30px;
-        height: 30px;
         position: absolute;
-        top: 0;
-        right: -40px;
-        background-color: $black;
+        top: -4px;
+        left: -40px;
+        background-color: transparent;
+        border: none;
     }
 }

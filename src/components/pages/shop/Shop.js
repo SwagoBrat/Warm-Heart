@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import AppHeader from "../../appHeader/AppHeader";
 import AppCards from "../../appCards/AppCards";
@@ -6,18 +6,46 @@ import AppFooter from "../../appFooter/AppFooter";
 import MenuFilter from "../../menuFilter/MenuFilter";
 import LastViewed from "../../lastViewed/LastViewed";
 import Spinner from "../../spinner/Spinner";
+import ErrorBoundary from "../../errorBoundary/ErrorBoundary";
+import { Helmet } from "react-helmet";
 
 import './shop.scss';
+import ErrorMessage from "../../errorMessage/ErrorMessage";
 
-const Shop = ({ carts, slides, lastViewedIds, handleCardClick }) => {
+const Shop = ({ carts, slides, lastViewedIds, handleCardClick, loading, error }) => {
     const [filters, setFilters] = useState({
         size: '',
         price: '',
     });
 
+    const spinnerItem = () => {
+        return (
+            <div className="head__spinner">
+                <Spinner />
+            </div>
+        )
+    }
+
+    const errorItem = () => {
+        return (
+            <div className="head__spinner">
+                <ErrorMessage />
+            </div>
+        )
+    }
+
     return (
         <>
-            <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+            <Helmet>
+                <meta
+                    name="description"
+                    content="Plaids shop"
+                />
+                <title>Plaids shop</title>
+            </Helmet >
+            <ErrorBoundary>
+                <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+            </ErrorBoundary>
             <section className="head">
                 <div className="head__h1">
                     <div className="container">
@@ -32,15 +60,22 @@ const Shop = ({ carts, slides, lastViewedIds, handleCardClick }) => {
                     </div>
                 </div>
             </section>
-            {slides.length > 0 ?
+
+            <ErrorBoundary>
+                <MenuFilter filters={filters} setFilters={setFilters} slides={slides} />
+            </ErrorBoundary>
+            {error && errorItem()}
+            {loading && spinnerItem()}
+            {!error && !loading && slides.length > 0 && (
                 <>
-                    <MenuFilter filters={filters} setFilters={setFilters} slides={slides} />
-                    <AppCards filters={filters} handleCardClick={handleCardClick} slides={slides} />
-                    <LastViewed lastViewedIds={lastViewedIds} slides={slides} />
+                    <ErrorBoundary>
+                        <AppCards filters={filters} handleCardClick={handleCardClick} slides={slides} />
+                    </ErrorBoundary>
+                    <ErrorBoundary>
+                        <LastViewed lastViewedIds={lastViewedIds} slides={slides} />
+                    </ErrorBoundary>
                 </>
-                : <div className="head__spinner">
-                    <Spinner />
-                </div>}
+            )}
             <AppFooter />
         </>
     );
