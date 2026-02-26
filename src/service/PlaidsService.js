@@ -2,7 +2,7 @@ import { useHttp } from "../hooks/useHttp"
 
 const usePlaidsService = () => {
 
-    const { request,loading, error,clearError  } = useHttp();
+    const { request, loading, error, clearError } = useHttp();
 
     const getAllPliads = async () => {
         const res = await request('http://localhost:3001/plaids')

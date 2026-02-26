@@ -58,6 +58,7 @@ const AppPopular = ({ slides, handleCardClick, loading, error }) => {
                     {sliceSlides.map((item, idx) => (
                         <Link key={item.id} to={`/forecome/${item.id}`} className='swiper-link'>
                             <div
+                            on
                                 onClick={() => handleCardClick(item.id)}
                                 className="swiper-slide"
                                 ref={idx === 0 ? slideRef : null}

@@ -14,12 +14,11 @@ export const useHttp = () => {
             setLoading(false);
             return await response.json()
         } catch (e) {
-             setLoading(false);
+            setLoading(false);
             setError(e.message);
             throw e;
         }
     };
-
     const clearError = useCallback(() => setError(null), []);
 
 

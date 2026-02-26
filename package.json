@@ -9,6 +9,7 @@
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^13.5.0",
     "concurrently": "^9.2.1",
+    "formik": "^2.4.9",
     "leaflet": "^1.9.4",
     "mapbox-gl": "^3.17.0",
     "react": "^19.2.3",
@@ -21,7 +22,8 @@
     "react-scripts": "5.0.1",
     "react-transition-group": "^4.4.5",
     "sass": "^1.97.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yup": "^1.7.1"
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\" \"npx json-server plaids.json --port 3001\"",

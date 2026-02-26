@@ -32,7 +32,9 @@ const MainPage = ({ carts, slides, handleCardClick, loading, error }) => {
             <AppBlackBlock />
             <AppEco />
             <AppInst />
-            <AppSubscribtion />
+            <ErrorBoundary>
+                <AppSubscribtion />
+            </ErrorBoundary>
             <AppFooter />
         </>
     )

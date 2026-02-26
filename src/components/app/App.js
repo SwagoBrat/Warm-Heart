@@ -23,6 +23,7 @@ const App = () => {
     const { getAllPliads, clearError, loading, error } = usePlaidsService();
 
 
+
     const [carts, setCarts] = useState(() => {
         const saved = localStorage.getItem("carts");
         return saved ? JSON.parse(saved) : [];
