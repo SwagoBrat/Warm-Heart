@@ -1,19 +1,26 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, use } from 'react';
 import { Link } from 'react-router';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
+import usePlaidsService from '../../service/PlaidsService';
 
 import './appPopular.scss';
 
-const AppPopular = ({ slides, handleCardClick, loading, error }) => {
-    const sliceSlides = slides.slice(0, 8);
-    const visibleSlides = 3;
+const AppPopular = () => {
+    const [slides, setSlides] = useState([]);
     const [index, setIndex] = useState(0);
     const [slideWidth, setSlideWidth] = useState(0);
-
+    const visibleSlides = 3;
     const slideRef = useRef(null);
-    const maxIndex = Math.max(sliceSlides.length - visibleSlides, 0);
+    const maxIndex = Math.max(slides.length - visibleSlides, 0);
+    const { getRandomProducts, error, loading } = usePlaidsService()
+
+    useEffect(() => {
+        getRandomProducts()
+            .then((data) => setSlides(data))
+    }, [])
+
 
     useEffect(() => {
         if (slideRef.current) {
@@ -21,7 +28,7 @@ const AppPopular = ({ slides, handleCardClick, loading, error }) => {
             let gap = slide.offsetWidth === 310 ? 10 : 20;
             setSlideWidth(slide.offsetWidth + gap);
         }
-    }, [sliceSlides.length]);
+    }, [slides]);
 
     const next = () => {
         if (maxIndex === 0) return;
@@ -55,29 +62,29 @@ const AppPopular = ({ slides, handleCardClick, loading, error }) => {
                         transition: '0.4s ease'
                     }}
                 >
-                    {sliceSlides.map((item, idx) => (
-                        <Link key={item.id} to={`/forecome/${item.id}`} className='swiper-link'>
+                    {slides.map((item, idx) => (
+                        <Link key={item._id} to={`/forecome/${item._id}`} className='swiper-link'>
                             <div
-                            on
-                                onClick={() => handleCardClick(item.id)}
+
                                 className="swiper-slide"
                                 ref={idx === 0 ? slideRef : null}
                             >
                                 <div className="bg">
-                                    <img src={item.img} alt={item.title} />
+                                    <img src={item.images[0]} alt={item.name} />
                                 </div>
-                                <h3 className="swipper__title">{item.title}</h3>
+                                <h3 className="swipper__title">{item.name}</h3>
                                 <div className="swipper__parametrs">
                                     <p>{item.size}</p>
-                                    <p>{item.price}</p>
+                                    <p>${item.price}</p>
                                 </div>
                             </div>
                         </Link>
                     ))}
+
                 </div>
                 {maxIndex > 0 && (
                     <div className="swiper-paginations">
-                        {sliceSlides.slice(0, maxIndex + 1).map((_, i) => (
+                        {slides.slice(0, maxIndex + 1).map((_, i) => (
                             <span
                                 key={i}
                                 onClick={() => setIndex(i)}
@@ -88,7 +95,7 @@ const AppPopular = ({ slides, handleCardClick, loading, error }) => {
                                 }
                             />
                         ))}
-                        <button className="swiper-left" onClick={next}><span className='icon-right'></span></button>
+                        <button className=" swiper-left" onClick={next}><span className='icon-right'></span></button>
                         <button className="swiper-rigth" onClick={prev}> <span className='icon-left'></span></button>
                     </div>
                 )}
@@ -103,7 +110,7 @@ const AppPopular = ({ slides, handleCardClick, loading, error }) => {
                 <div className="popular__wrapper">
                     {error && errorItem()}
                     {loading && spinnerItem()}
-                    {!error && !loading && slides.length > 0 && renderItem()}
+                    {!error && !loading && slides?.length > 0 && renderItem()}
                 </div>
             </div>
         </section>

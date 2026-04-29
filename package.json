@@ -1,6 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
+  "proxy": "http://localhost:3001",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.11.2",
@@ -26,7 +27,7 @@
     "yup": "^1.7.1"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" \"npx json-server plaids.json --port 3001\"",
+    "start": "concurrently \"react-scripts start\" \"npx json-server plaids.json --port 3002\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

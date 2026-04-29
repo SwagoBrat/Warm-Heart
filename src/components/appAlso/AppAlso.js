@@ -1,25 +1,32 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router';
 
-const AppAlso = ({ slides, forecome, handleCardClick }) => {
-    const filtered = slides.filter((slide) => slide.size === forecome.size && slide.id !== forecome.id);
-    const sliced = filtered.slice(0, 8);
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
 
-    const visibleSlides = 3;
+import '../appPopular/appPopular.scss';
+import usePlaidsService from '../../service/PlaidsService';
+
+const AppAlso = ({ plaid }) => {
+    const [slides, setSlides] = useState([]);
     const [index, setIndex] = useState(0);
     const [slideWidth, setSlideWidth] = useState(0);
-
+    const visibleSlides = 3;
     const slideRef = useRef(null);
-    const maxIndex = Math.max(sliced.length - visibleSlides, 0);
+    const maxIndex = Math.max(slides.length - visibleSlides, 0);
+    const { getAlsoLikedProducts, loading, error } = usePlaidsService();
+
+    useEffect(() => {
+        getAlsoLikedProducts(plaid._id, 8, plaid.size).then((data) => setSlides(data))
+    }, [plaid])
 
     useEffect(() => {
         if (slideRef.current) {
             const slide = slideRef.current;
-            let gap = 0;
-            slide.offsetWidth === 310 ? gap = 10 : gap = 20;
+            let gap = slide.offsetWidth === 310 ? 10 : 20;
             setSlideWidth(slide.offsetWidth + gap);
         }
-    }, []);
+    }, [slides]);
 
     const next = () => {
         if (maxIndex === 0) return;
@@ -31,62 +38,84 @@ const AppAlso = ({ slides, forecome, handleCardClick }) => {
         setIndex(index === 0 ? maxIndex : index - 1);
     };
 
-    return (
-        <div className="popular">
-            <div className="container">
-                <h2 className="popular__title">You may also like</h2>
-                <div className="popular__wrapper">
-                    <div
-                        className="swiper-wrapper"
-                        style={{
-                            transform: `translateX(-${index * slideWidth}px)`,
-                            transition: '0.4s ease'
-                        }}
-                    >
-                        {sliced.map((item, idx) => (
-                            <Link key={item.id} to={`/forecome/${item.id}`} className='swiper-link'>
-                                <div
-                                    onClick={() => {
-                                        window.scrollTo({ top: 0, behavior: "smooth" })
-                                        handleCardClick(item.id)
-                                    }}
-                                    className="swiper-slide"
-                                    ref={idx === 0 ? slideRef : null}
-                                >
-                                    <div className="bg">
-                                        <img src={item.img} alt={item.title} />
-                                    </div>
-                                    <h3 className="swipper__title">{item.title}</h3>
-                                    <div className="swipper__parametrs"
-                                    >
-                                        <p>{item.size}</p>
-                                        <p>{item.price}</p>
-                                    </div>
+    const spinnerItem = () => {
+        return (
+            <div className='popular__spinner'> <Spinner /> </div>
+        )
+    }
+
+    const errorItem = () => {
+        return (
+            <div className='popular__spinner'><ErrorMessage /></div>
+        )
+    }
+
+    const renderItem = () => {
+        return (
+            <>
+                <div
+                    className="swiper-wrapper"
+                    style={{
+                        transform: `translateX(-${index * slideWidth}px)`,
+                        transition: '0.4s ease'
+                    }}
+                >
+                    {slides.map((item, idx) => (
+                        <Link key={item._id} to={`/forecome/${item._id}`} className='swiper-link'>
+                            <div
+
+                                className="swiper-slide"
+                                ref={idx === 0 ? slideRef : null}
+                            >
+                                <div className="bg">
+                                    <img src={item.images[0]} alt={item.name} />
                                 </div>
-                            </Link>
-                        ))}
-                    </div>
-                    {maxIndex > 0 && (
-                        <div className="swiper-paginations">
-                            {sliced.slice(0, maxIndex + 1).map((_, i) => (
-                                <span
-                                    key={i}
-                                    onClick={() => setIndex(i)}
-                                    className={
-                                        i === index
-                                            ? "swiper-pagination swiper-pagination__active"
-                                            : "swiper-pagination"
-                                    }
-                                />
-                            ))}
-                            <button className="swiper-rigth" onClick={prev}></button>
-                            <button className="swiper-left" onClick={next}></button>
-                        </div>
-                    )}
+                                <h3 className="swipper__title">{item.name}</h3>
+                                <div className="swipper__parametrs">
+                                    <p>{item.size}</p>
+                                    <p>${item.price}</p>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+
                 </div>
-            </div>
-        </div>
-    )
-}
+                {maxIndex > 0 && (
+                    <div className="swiper-paginations">
+                        {slides.slice(0, maxIndex + 1).map((_, i) => (
+                            <span
+                                key={i}
+                                onClick={() => setIndex(i)}
+                                className={
+                                    i === index
+                                        ? "swiper-pagination swiper-pagination__active"
+                                        : "swiper-pagination"
+                                }
+                            />
+                        ))}
+                        <button className=" swiper-left" onClick={next}><span className='icon-right'></span></button>
+                        <button className="swiper-rigth" onClick={prev}> <span className='icon-left'></span></button>
+                    </div>
+                )}
+            </>
+        )
+    }
+
+    return (slides.length > 0
+        ? (
+            <section className="popular">
+                <div className="container">
+                    <h2 className="popular__title">You may also like</h2>
+                    <div className="popular__wrapper">
+                        {error && errorItem()}
+                        {loading && spinnerItem()}
+                        {!error && !loading && renderItem()}
+                    </div>
+                </div>
+            </section>
+        )
+        : null
+    );
+};
 
 export default AppAlso;

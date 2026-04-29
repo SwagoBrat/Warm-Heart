@@ -1,81 +1,161 @@
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-
+import { useState, useEffect } from 'react';
 import './shopppingCart.scss'
+import UserService from '../../service/UserService';
+import Spinner from '../spinner/Spinner';
+import ErrorMessage from '../errorMessage/ErrorMessage';
+import { useNavigate } from 'react-router';
 
-const ShoppingCart = ({ plaids, setCarts }) => {
+const ShoppingCart = () => {
 
-    const handlePlusClick = (plaid) => {
-        setCarts((prev) => {
+    const { deleteUserCart, loading, error } = UserService();
+    const navigate = useNavigate()
 
-            return prev.map(item =>
-                item.id === plaid.id
-                    ? { ...item, counter: plaid.counter + 1 }
-                    : item
-            );
-        });
-    }
+    const [userData, setUserData] = useState(null);
 
-    const handleMinusClick = (plaid) => {
-        setCarts((prev) => {
+    useEffect(() => {
+        const data = JSON.parse(localStorage.getItem('user'));
+        setUserData(data);
+    }, []);
 
-            return prev.map(item =>
-                item.id === plaid.id
-                    ? { ...item, counter: plaid.counter === 1 ? 1 : plaid.counter - 1 }
-                    : item
-            );
-        });
-    }
+    const cart = userData?.user?.cart || [];
 
-    const handleDeleteClick = (plaid) => {
-        setCarts(prev => {
-            return prev.filter((prev) => prev.id !== plaid.id)
-        })
-    }
+    const updateCart = (newCart) => {
+        const updated = {
+            ...userData,
+            user: {
+                ...userData.user,
+                cart: newCart
+            }
+        };
+
+        setUserData(updated);
+        localStorage.setItem('user', JSON.stringify(updated));
+    };
+
+    const increaseCount = (productId) => {
+        const newCart = cart.map(item =>
+            item.product_id === productId
+                ? { ...item, count: item.count + 1 }
+                : item
+        );
+
+        updateCart(newCart);
+    };
+
+    const decreaseCount = (productId) => {
+        const newCart = cart.map(item =>
+            item.product_id === productId
+                ? { ...item, count: item.count > 1 ? item.count - 1 : 1 }
+                : item
+        );
+
+        updateCart(newCart);
+    };
+
+    const handleDeleteUserCart = (plaid) => {
+        deleteUserCart(userData.user._id, plaid)
+            .then((data) => {
+                const updatedData = {
+                    ...userData,
+                    user: data,
+                };
+
+                setUserData(updatedData);
+                localStorage.setItem('user', JSON.stringify(updatedData));
+            });
+    };
+
+    const spinnerItem = () => (
+        <div className="head__spinner">
+            <Spinner />
+        </div>
+    );
+
+    const errorItem = () => (
+        <div className="head__spinner">
+            <ErrorMessage />
+        </div>
+    );
 
     return (
         <div className="shoppingCart">
             <div className='container'>
                 <h2 className="shoppingCart__title">Shopping cart</h2>
-                <div className="shoppingCart__wrapper">
-                    <TransitionGroup>
-                        {plaids.map((plaid) => (
-                            <CSSTransition
-                                key={plaid.id}
-                                nodeRef={plaid.nodeRef}
-                                timeout={500}
-                                classNames="item">
-                                <div ref={plaid.nodeRef} key={plaid.id} className="shoppingCart__item">
-                                    <div className="shoppingCart-bg">
-                                        <img className='shoppingCart__img' src={plaid.img} alt={plaid.title} />
+
+                {loading && spinnerItem()}
+                {error && !loading && errorItem()}
+
+                {!loading && !error && cart.length === 0 && (
+                    <div className="shoppingCart__empty">
+                        <h3 className="shoppingCart__empty-title">Your cart is empty</h3>
+                        <p className="shoppingCart__empty-text">
+                            Looks like you haven’t added any products yet.
+
+                        </p>
+                        <button
+                            className="shoppingCart__empty-btn"
+                            onClick={() => navigate('/shop')} >
+                            Go to shop
+                        </button>
+                    </div>
+                )}
+
+                {!loading && !error && cart.length > 0 && (
+                    <div className="shoppingCart__wrapper">
+
+                        {cart.map((plaid) => (
+                            <div key={plaid.product_id} className="shoppingCart__item">
+
+                                <div className="shoppingCart-bg">
+                                    <img className='shoppingCart__img' src={plaid.img} alt={plaid.title} />
+                                </div>
+
+                                <div className="shoppingCart__descr">
+                                    <h3 className="shoppingCart__descr-name">{plaid.name}</h3>
+                                </div>
+
+                                <div className='card__buttons-counter'>
+
+                                    <div
+                                        className='card__buttons-counter-dec'
+                                        onClick={() => decreaseCount(plaid.product_id)}
+                                    >
+                                        <span></span>
                                     </div>
-                                    <div className="shoppingCart__descr">
-                                        <h3 className="shoppingCart__descr-name">{plaid.title}</h3>
-                                        <div className="shoppingCart__descr-params">
-                                            <p className="shoppingCart__descr-size">{plaid.size}</p>
-                                            <p className="shoppingCart__descr-color">{plaid.color}</p>
-                                        </div>
+
+                                    <div className='card__buttons-counter-count'>
+                                        <span style={{ marginRight: plaid.count >= 10 ? '11px' : '0px' }}>{plaid.count}</span>
                                     </div>
-                                    <div className='card__buttons-counter'>
-                                        <div
-                                            onClick={() => handleMinusClick(plaid)}
-                                            className='card__buttons-counter-dec'></div>
-                                        <div className='card__buttons-counter-count'><span>{plaid.counter}</span></div>
-                                        <div
-                                            onClick={() => handlePlusClick(plaid)}
-                                            className='card__buttons-counter-inc'> <span></span><span></span></div>
+
+                                    <div
+                                        className='card__buttons-counter-inc'
+                                        onClick={() => increaseCount(plaid.product_id)}
+                                    >
+                                        <span></span><span></span>
                                     </div>
-                                    <p className="shoppingCart__price">{plaid.price}</p>
-                                    <div onClick={() => handleDeleteClick(plaid)} className='cardwrapper'>
-                                        <div className="shoppingCart-delete"> <span></span><span></span></div>
+
+                                </div>
+
+                                <p className="shoppingCart__price">${plaid.price}</p>
+
+                                <div className='cardwrapper'>
+                                    <div
+                                        className="shoppingCart-delete"
+                                        onClick={() => handleDeleteUserCart(plaid)}
+                                    >
+                                        <span></span><span></span>
                                     </div>
                                 </div>
-                            </CSSTransition>
+
+                            </div>
                         ))}
-                    </TransitionGroup>
-                </div>
+
+                    </div>
+                )}
+
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default ShoppingCart;

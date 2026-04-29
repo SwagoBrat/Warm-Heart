@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import "./appSubscribtion.scss";
 
 const AppSubscribtion = () => {
-    const { postEmail, loading, error } = usePlaidsService();
+    const { postEmail, loading, error, clearError } = usePlaidsService();
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
@@ -13,6 +13,7 @@ const AppSubscribtion = () => {
         if (success) {
             timer = setTimeout(() => setSuccess(false), 5000);
         }
+        clearError();
         return () => clearTimeout(timer);
     }, [success]);
 
@@ -40,6 +41,7 @@ const AppSubscribtion = () => {
                             postEmail({ email })
                                 .then(() => setSuccess(true))
                                 .then(() => resetForm())
+                                .finally(() => clearError())
                         }}
                     >
                         <Form>

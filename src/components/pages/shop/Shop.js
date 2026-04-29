@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
+import usePlaidsService from '../../../service/PlaidsService';
+import usePlaidsFilterService from '../../../service/PlaidsFilterService';
+
 
 import AppHeader from "../../appHeader/AppHeader";
 import AppCards from "../../appCards/AppCards";
@@ -7,16 +11,33 @@ import MenuFilter from "../../menuFilter/MenuFilter";
 import LastViewed from "../../lastViewed/LastViewed";
 import Spinner from "../../spinner/Spinner";
 import ErrorBoundary from "../../errorBoundary/ErrorBoundary";
-import { Helmet } from "react-helmet";
-
-import './shop.scss';
 import ErrorMessage from "../../errorMessage/ErrorMessage";
 
-const Shop = ({ carts, slides, lastViewedIds, handleCardClick, loading, error }) => {
-    const [filters, setFilters] = useState({
-        size: '',
-        price: '',
-    });
+
+
+
+import './shop.scss';
+
+const Shop = () => {
+    const { getProductData, loading, error } = usePlaidsService()
+    const { getAllFilters, clearError, errorFilters, filterLoading } = usePlaidsFilterService();
+
+    const [filters, setFilters] = useState();
+    const [products, setProducts] = useState();
+    const [productFilters, setProductFilters] = useState({ color: '', size: '', price: '' });
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log(user)
+
+    useEffect(() => {
+        getProductData(productFilters.color, productFilters.size, productFilters.price)
+            .then((data) => setProducts(data))
+    }, [productFilters])
+
+    useEffect(() => {
+        clearError();
+        getAllFilters()
+            .then((data) => setFilters(data));
+    }, []);
 
     const spinnerItem = () => {
         return (
@@ -44,7 +65,7 @@ const Shop = ({ carts, slides, lastViewedIds, handleCardClick, loading, error })
                 <title>Plaids shop</title>
             </Helmet >
             <ErrorBoundary>
-                <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+                <AppHeader />
             </ErrorBoundary>
             <section className="head">
                 <div className="head__h1">
@@ -61,19 +82,24 @@ const Shop = ({ carts, slides, lastViewedIds, handleCardClick, loading, error })
                 </div>
             </section>
 
-            <ErrorBoundary>
-                <MenuFilter filters={filters} setFilters={setFilters} slides={slides} />
-            </ErrorBoundary>
-            {error && errorItem()}
-            {loading && spinnerItem()}
-            {!error && !loading && slides.length > 0 && (
+            {error && errorFilters && errorItem()}
+            {(loading || filterLoading) && spinnerItem()}
+            {!error && !loading && products !== undefined && filters !== undefined && (
                 <>
                     <ErrorBoundary>
-                        <AppCards filters={filters} handleCardClick={handleCardClick} slides={slides} />
+                        <MenuFilter setProductFilters={setProductFilters} filters={filters} totalProductLeght={products[1]} productFilters={productFilters} />
                     </ErrorBoundary>
                     <ErrorBoundary>
-                        <LastViewed lastViewedIds={lastViewedIds} slides={slides} />
+                        <AppCards filters={filters} products={products} />
                     </ErrorBoundary>
+                    {
+                        user === null ? null
+                            : (
+                                <ErrorBoundary>
+                                    <LastViewed />
+                                </ErrorBoundary>
+                            )
+                    }
                 </>
             )}
             <AppFooter />

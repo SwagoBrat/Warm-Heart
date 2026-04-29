@@ -2,26 +2,32 @@ import AppHeader from "../../appHeader/AppHeader";
 import AppFooter from "../../appFooter/AppFooter";
 import LastViewed from "../../lastViewed/LastViewed";
 import AppCard from "../../appCard/AppCard";
-import AppAlso from "../../appAlso/AppAlso";
 import ErrorMessage from "../../errorMessage/ErrorMessage";
 import ErrorBoundary from "../../errorBoundary/ErrorBoundary";
 import { Helmet } from "react-helmet";
+import AppAlso from '../../appAlso/AppAlso';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router";
 import Spinner from "../../spinner/Spinner";
+import usePlaidsService from '../../../service/PlaidsService';
 
 import './singleForecome.scss';
+import UserService from '../../../service/UserService';
 
-const SingleForecome = ({ setCarts, carts, slides, handleCardClick, lastViewedIds, loading, error }) => {
+const SingleForecome = () => {
     const { id } = useParams();
-    const numericId = Number(id);
+    const { getProductById, loading, error } = usePlaidsService()
+    const [plaid, setPlaid] = useState();
+
+    useEffect(() => {
+        getProductById(id).then(data => setPlaid(data))
+    }, [id]);
 
     useEffect(() => {
         window.scrollTo({ top: 0 });
     }, []);
 
-    const forecome = slides.find(item => item.id === numericId);
 
     return (
         <>
@@ -33,12 +39,12 @@ const SingleForecome = ({ setCarts, carts, slides, handleCardClick, lastViewedId
                 <title>Plaids single page</title>
             </Helmet >
             <ErrorBoundary>
-                <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+                <AppHeader />
             </ErrorBoundary>
             {error && <ErrorMessage />}
             {loading && <Spinner />}
 
-            {!error && !loading && forecome && (
+            {!error && !loading && plaid && (
                 <>
                     <ErrorBoundary>
                         <div className="container">
@@ -46,22 +52,20 @@ const SingleForecome = ({ setCarts, carts, slides, handleCardClick, lastViewedId
                                 <Link className="singl__nav-link" to={`/`}>Home</Link>
                                 <span className="singl__nav-line">/</span>
                                 <Link className="singl__nav-link" to={`/shop`}>Shop</Link>
-                                <span className="singl__nav-line">/</span>
-                                <Link className="singl__nav-link" to={`/forecome/${forecome.id}`}>{forecome.title}</Link>
                             </div>
                         </div>
                     </ErrorBoundary>
 
                     <ErrorBoundary>
-                        <AppCard numericId={numericId} setCarts={setCarts} forecome={forecome} />
+                        <AppCard forecome={plaid} />
                     </ErrorBoundary>
 
                     <ErrorBoundary>
-                        <AppAlso slides={slides} forecome={forecome} handleCardClick={handleCardClick} />
+                        <AppAlso plaid={plaid} />
                     </ErrorBoundary>
 
                     <ErrorBoundary>
-                        <LastViewed lastViewedIds={lastViewedIds} slides={slides} />
+                        <LastViewed />
                     </ErrorBoundary>
                 </>
             )}

@@ -11,8 +11,7 @@ import { Helmet } from "react-helmet";
 
 
 
-const MainPage = ({ carts, slides, handleCardClick, loading, error }) => {
-
+const MainPage = () => {
     return (
         <>
             <Helmet>
@@ -22,12 +21,12 @@ const MainPage = ({ carts, slides, handleCardClick, loading, error }) => {
                 />
                 <title>Plaids market place</title>
             </Helmet >
-            <AppHeader carts={carts} slides={slides} handleCardClick={handleCardClick} />
+            <AppHeader />
             <ErrorBoundary>
-                <AppHead slides={slides} loading={loading} error={error} />
+                <AppHead />
             </ErrorBoundary>
             <ErrorBoundary>
-                <AppPopular slides={slides} handleCardClick={handleCardClick} loading={loading} error={error} />
+                <AppPopular />
             </ErrorBoundary>
             <AppBlackBlock />
             <AppEco />

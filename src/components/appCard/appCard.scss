@@ -4,10 +4,67 @@
     margin-top: 30px;
     display: flex;
     gap: 30px;
+    position: relative;
 
+    .btn{
+        position: absolute;
+        bottom: 10px;
+        border: none;
+        background-color: transparent;
+        font-size: 30px;
+
+        &__next{
+            left: 400px;
+        }
+
+
+    }
+
+    &__pagenations{
+        position: absolute;
+        bottom: 0px;
+        left: 85px;
+        display: flex;
+        flex-direction: row;
+        padding: 0;
+        list-style: none;
+        gap: 30px;
+        align-items:center;
+
+            &-item{
+            display: block;
+            width: 50px;
+            height: 50px;
+            img{
+                display: block;
+                border-radius: 50%;
+            }
+
+            &__active{
+                width: 55px;
+                height: 55px;
+                            img{
+                display: block;
+                border-radius: 50%;
+            }
+            }
+        }
+    }
+
+
+
+
+    &__wrapper{
+        overflow: hidden;
+        height: 440px;
+        margin-bottom: 100px;
+    }
     &-slider {
         width: 460px;
-        height: 460px;
+
+        img{
+            height: 440px;
+        }
     }
 
     &-info {
@@ -102,7 +159,7 @@
 
 
     &__buttons {
-        margin-top: 50px;
+        margin-top: 100px;
         display: flex;
         column-gap: 40px;
         align-items: center;
@@ -122,12 +179,13 @@
             }
 
             &-count {
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
                 background-color: $black;
-                justify-items: center;
-                align-content: center;
 
                 span {
                     display: block;
